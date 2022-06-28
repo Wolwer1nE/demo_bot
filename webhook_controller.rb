@@ -9,12 +9,13 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   self.session_store = :memory_store, {expires_in: 1.month}
 
   def message(message)
-    puts 'we have a visitor'
-    puts message.class
+    warn 'we have a visitor'
   end
 
   def start!
-    respond_with :message, text: 'Hello!'
+    rows = [[{text: 'Ваучер'},{text: 'Бинарные опционы'}],[{text: 'Нет и ладно'}]]
+    keyboard = {keyboard: rows, resize_keyboard: true   }
+    reply_with :message, {text: 'Прювет', reply_markup: keyboard}
   end
 
   def learn!
