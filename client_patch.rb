@@ -8,7 +8,16 @@ module Telegram
         @username = username || options[:username]
         @base_uri = format(URL_TEMPLATE, server: server, token: self.token)
       end
+
+      def http_request(uri, body)
+        client.post(uri, body)
+      rescue RuntimeError => e
+        warn 'client had a problem'
+        warn e.message
+      end
+
     end
+
     class UpdatesPoller
       def fetch_updates(offset = self.offset)
         response = bot.async(false) { bot.get_updates(offset: offset, timeout: timeout) }
@@ -19,6 +28,7 @@ module Telegram
         nil
       end
     end
+
   end
 
 end
