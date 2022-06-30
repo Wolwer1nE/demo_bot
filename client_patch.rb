@@ -11,9 +11,8 @@ module Telegram
 
       def http_request(uri, body)
         client.post(uri, body)
-      rescue RuntimeError => e
-        warn 'client had a problem'
-        warn e.message
+      rescue StandardError
+        nil
       end
 
     end
@@ -22,9 +21,7 @@ module Telegram
       def fetch_updates(offset = self.offset)
         response = bot.async(false) { bot.get_updates(offset: offset, timeout: timeout) }
         response.is_a?(Array) ? response : response['result']
-      rescue RuntimeError => e
-        log { 'Network problem' }
-        warn e.message
+      rescue StandardError
         nil
       end
     end
